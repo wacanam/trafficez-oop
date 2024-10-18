@@ -3,7 +3,8 @@
 
 #include "light.h"
 
-class TrafficLight {
+class TrafficLight
+{
 public:
 	TrafficLight(int address, bool debug = false);
 	// Methods for controlling the traffic light
@@ -13,6 +14,7 @@ public:
 	void flash(int rate);
 	void cycle();
 	int getCurrentColor();
+
 private:
 	bool debug = false;
 	Light redLight;
