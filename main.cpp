@@ -1,6 +1,6 @@
 ﻿// trafficez-oop.cpp : Defines the entry point for the application.
 //
-#include "lib/light.h"
+#include "lib/traffic_light.h"
 #include "lib/global.h"
 
 std::string host = "localhost";
@@ -30,15 +30,9 @@ int main(int argc, const char *argv[])
 	std::thread telnetThread(initializeTelnetClient, host, port);
 	telnetThread.detach(); // Detach the thread to allow it to run independently
 
-	Light redLight(Light::Color::RED, 1, true);
-	Light greenLight(Light::Color::GREEN, 2, true);
-	Light yellowLight(Light::Color::YELLOW, 3, true);
-	redLight.controlState(Light::State::BLINKING);
-	greenLight.controlState(Light::State::BLINKING);
-	yellowLight.controlState(Light::State::BLINKING);
-	// turn off the light after 5 seconds
-	// std::this_thread::sleep_for(std::chrono::seconds(5));
-	// redLight.controlState(Light::State::OFF);
+	TrafficLight trafficLight(1, 60, true);
+	trafficLight.terminate();
+	trafficLight.cycle();
 
 	// keep it running because we are using threads until we press a key
 	std::cin.get();

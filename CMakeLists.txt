@@ -13,7 +13,7 @@ project ("main")
 include(FetchContent)
 
 # Recursively find all .cpp files in the lib directory
-file(GLOB_RECURSE LIB_SOURCES "lib/*.cpp")
+file(GLOB_RECURSE LIB_SOURCES "lib/[a-zA-Z_]*.cpp")
 
 # Add the executable, including main.cpp explicitly
 add_executable(main "main.cpp" ${LIB_SOURCES})

@@ -11,7 +11,8 @@ void Light::turnOn()
     if (debug_)
     {
         std::string message = fmt::format("{} light is on", colorMap[color_]);
-        fmt::print("{}\n", message);
+        std::cout << "\r\033[K" << message << std::endl
+                  << std::flush;
     }
 }
 
@@ -61,7 +62,7 @@ void Light::controlState(State state)
     if (debug_)
     {
         std::string message = fmt::format("Controlling light: color={}, state={}", colorMap[color_], stateMap[state]);
-        fmt::print("{}\n", message);
+        std::cout << "\r\033[K" << message << std::flush;
     }
 
     if (state == State::ON)
@@ -86,8 +87,9 @@ void Light::blinkingThread()
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         if (debug_)
         {
+
             std::string message = fmt::format("{} light is {}", colorMap[color_], isOn_ ? "on" : "off");
-            fmt::print("{}\n", message);
+            std::cout << "\r\033[K" << message << std::flush;
         }
     }
 }
