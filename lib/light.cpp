@@ -1,37 +1,93 @@
 #include "light.h"
+#include "utils.h"
 #include <iostream>
+#include <fmt/format.h>
 
-Light::Light(int address, bool debug) : address(address), debug(debug) {}
+Light::Light(Color color, int address, bool debug) : color_(color), state_(State::OFF), isBlinking_(false), address_(address), debug_(debug) {}
 
 void Light::turnOn()
 {
-    state = true;
-    if (debug)
+    isOn_ = true;
+    if (debug_)
     {
-        std::cout << "Traffic light " << address << " turned on." << std::endl;
+        std::string message = fmt::format("{} light is on", colorMap[color_]);
+        fmt::print("{}\n", message);
     }
 }
 
 void Light::turnOff()
 {
-    state = false;
-    if (debug)
+    isOn_ = false;
+    stopBlinking();
+}
+
+void Light::startBlinking()
+{
+    if (isBlinking_)
     {
-        std::cout << "Traffic light " << address << " turned off." << std::endl;
+        return;
+    }
+    isBlinking_ = true;
+    blinkingThread_ = std::thread(&Light::blinkingThread, this);
+    blinkingThread_.detach();
+}
+
+void Light::stopBlinking()
+{
+    isBlinking_ = false;
+    if (blinkingThread_.joinable())
+    {
+        blinkingThread_.join();
     }
 }
 
-void Light::flash(int rate)
+Light::Color Light::getColor() const
 {
-    this->rate = rate;
-    // Implement flashing logic here
-    if (debug)
+    return color_;
+}
+
+int Light::getAddress() const
+{
+    return address_;
+}
+
+Light::State Light::getState() const
+{
+    return state_;
+}
+
+void Light::controlState(State state)
+{
+    if (debug_)
     {
-        std::cout << "Traffic light " << address << " flashing at rate: " << rate << std::endl;
+        std::string message = fmt::format("Controlling light: color={}, state={}", colorMap[color_], stateMap[state]);
+        fmt::print("{}\n", message);
+    }
+
+    if (state == State::ON)
+    {
+        turnOn();
+    }
+    else if (state == State::OFF)
+    {
+        turnOff();
+    }
+    else if (state == State::BLINKING)
+    {
+        startBlinking();
     }
 }
 
-bool Light::getStatus() const
+void Light::blinkingThread()
 {
-    return state;
+    while (isBlinking_)
+    {
+        isOn_ = !isOn_;
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        if (debug_)
+        {
+            std::string message = fmt::format("{} light is {}", colorMap[color_], isOn_ ? "on" : "off");
+            fmt::print("{}\n", message);
+        }
+    }
 }
