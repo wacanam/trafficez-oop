@@ -53,6 +53,23 @@
     "typeinfo": "cpp",
     "condition_variable": "cpp",
     "future": "cpp",
-    "mutex": "cpp"
+    "mutex": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "variant": "cpp",
+    "any": "cpp",
+    "bitset": "cpp",
+    "codecvt": "cpp",
+    "complex": "cpp",
+    "cstring": "cpp",
+    "set": "cpp",
+    "optional": "cpp",
+    "source_location": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "ranges": "cpp",
+    "sstream": "cpp",
+    "cinttypes": "cpp",
+    "typeindex": "cpp"
   }
 }
