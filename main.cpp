@@ -3,25 +3,31 @@
 #include "lib/traffic_light.h"
 #include "lib/global.h"
 
-std::string host = "localhost";
-std::string command = "relay on 1\n";
+std::string host = "192.168.1.5";
+std::string command = "reset";
 int port = 23;
+std::string username = "ezadmin";
+std::string password = "ez@dmin";
+
 
 void initializeTelnetClient(const std::string &host, int port)
 {
-	telnet_client = new TelnetClient(host, port);
-	if (telnet_client == nullptr)
+	// TelnetClient numatoRelay(host, port);
+	// numatoRelay.connectClient(username, password);
+	// numatoRelay.sendCommand("relay writeall ffff");
+	// numatoRelay.sendCommand("reset");
+	
+	numatoRelay = new TelnetClient("192.168.1.5", 23);
+
+	if (numatoRelay == nullptr)
 	{
 		std::cerr << "Error creating TelnetClient" << std::endl;
 		return;
 	}
-	if (telnet_client->connectClient())
-	{
-		telnet_client->sendCommand(command, [](const std::string &response)
-								   { std::cout << "Server response: " << response << std::endl; });
-	}
-	delete telnet_client;
-	telnet_client = nullptr;
+	numatoRelay->connectClient("ezadmin", "ez@dmin");
+	
+	// , [](const std::string &response)
+	// 					
 }
 
 int main(int argc, const char *argv[])
@@ -30,9 +36,12 @@ int main(int argc, const char *argv[])
 	std::thread telnetThread(initializeTelnetClient, host, port);
 	telnetThread.detach(); // Detach the thread to allow it to run independently
 
-	TrafficLight trafficLight(1, 60, true);
-	trafficLight.terminate();
-	trafficLight.cycle();
+	TrafficLight trafficLight1(1, 60, true);
+	TrafficLight trafficLight2(2, 60, true);
+	trafficLight1.terminate();
+	trafficLight2.terminate();
+	trafficLight1.cycle();
+	trafficLight2.cycle();
 
 	// keep it running because we are using threads until we press a key
 	std::cin.get();

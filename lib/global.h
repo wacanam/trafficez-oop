@@ -2,8 +2,9 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "telnet_client.hpp"
+// #include "telnet_client.hpp"
+#include "telnet_client.h"
 
-extern TelnetClient *telnet_client;
+extern TelnetClient *numatoRelay;
 
 #endif

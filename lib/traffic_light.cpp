@@ -6,9 +6,9 @@ TrafficLight::TrafficLight(int address, int cycleTime, bool debug) : address_(ad
                                                                      cycleTime_(cycleTime),
                                                                      isRunning_(false),
                                                                      isBlinking_(false),
-                                                                     redLight_(Light(Light::Color::RED, address + Light::Color::RED, debug)),
-                                                                     greenLight_(Light(Light::Color::GREEN, address + Light::Color::GREEN, debug)),
-                                                                     yellowLight_(Light(Light::Color::YELLOW, address + Light::Color::YELLOW, debug)) {};
+                                                                     redLight_(Light(Light::Color::RED, (address - 1) * 3 +  Light::Color::RED, debug)),
+                                                                     greenLight_(Light(Light::Color::GREEN, (address - 1) * 3 + Light::Color::GREEN, debug)),
+                                                                     yellowLight_(Light(Light::Color::YELLOW, (address - 1) * 3 + Light::Color::YELLOW, debug)) {};
 
 void TrafficLight::cycle()
 {
@@ -71,11 +71,11 @@ void TrafficLight::runningThread()
     while (isRunning_)
     {
         // start the go light
-        go(10);
+        go(15);
         // prepare to stop
-        prepareToStop(3);
+        prepareToStop(5);
         // stop
-        stop(10);
+        stop(15);
         // repeat
     }
 }

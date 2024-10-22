@@ -1,6 +1,7 @@
 {
   "cmake.configureArgs": [],
   "files.associations": {
+    "*.in": "cpp",
     "thread": "cpp",
     "array": "cpp",
     "atomic": "cpp",
@@ -70,6 +71,9 @@
     "ranges": "cpp",
     "sstream": "cpp",
     "cinttypes": "cpp",
-    "typeindex": "cpp"
+    "typeindex": "cpp",
+    "charconv": "cpp",
+    "format": "cpp",
+    "span": "cpp"
   }
 }

@@ -2,11 +2,19 @@
 #include "utils.h"
 #include <iostream>
 #include <fmt/format.h>
+#include "global.h"
 
-Light::Light(Color color, int address, bool debug) : color_(color), state_(State::OFF), isBlinking_(false), address_(address), debug_(debug) {}
+Light::Light(Color color, int address, bool debug) : color_(color), state_(State::OFF), isBlinking_(false), address_(address), debug_(debug) {
+
+	
+}
 
 void Light::turnOn()
 {
+    if(numatoRelay != nullptr) {
+        numatoRelay->sendCommand("relay on " + std::to_string(address_));
+    }
+       
     isOn_ = true;
     if (debug_)
     {
@@ -18,6 +26,9 @@ void Light::turnOn()
 
 void Light::turnOff()
 {
+    if(numatoRelay != nullptr) {
+        numatoRelay->sendCommand("relay off " + std::to_string(address_));
+    }
     isOn_ = false;
     stopBlinking();
 }
@@ -84,6 +95,14 @@ void Light::blinkingThread()
     while (isBlinking_)
     {
         isOn_ = !isOn_;
+        if (isOn_)
+        {
+            turnOn();
+        }
+        else
+        {
+            turnOff();
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         if (debug_)
         {
@@ -91,5 +110,14 @@ void Light::blinkingThread()
             std::string message = fmt::format("{} light is {}", colorMap[color_], isOn_ ? "on" : "off");
             std::cout << "\r\033[K" << message << std::flush;
         }
+    }
+}
+
+Light::~Light()
+{
+    if (numatoRelay != nullptr)
+    {
+	delete numatoRelay;
+	numatoRelay = nullptr;
     }
 }

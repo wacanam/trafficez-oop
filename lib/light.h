@@ -31,6 +31,7 @@ public:
 		{State::BLINKING, "BLINKING"}};
 
 	Light(Color color, int address, bool debug = false);
+	~Light();
 	void controlState(State state);
 	Color getColor() const;
 	int getAddress() const;

@@ -1,3 +1,3 @@
 #include "global.h"
 
-TelnetClient *telnet_client = nullptr;
+TelnetClient *numatoRelay = nullptr;
